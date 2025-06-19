@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Solicitudes de Admisión</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Arial, sans-serif;
+      background: linear-gradient(120deg, #1e1e2f 0%, #2a2a3d 100%);
+      margin: 0;
+      padding: 0;
+      color: #f0eaff;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #d4bfff;
+      margin-top: 40px;
+      font-size: 2em;
+    }
+
+    table {
+      width: 90%;
+      margin: 30px auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #2e2e42;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(129, 104, 255, 0.12);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #43356b;
+      color: #f0eaff;
+      font-weight: 600;
+      border-bottom: 2px solid #7c4dff;
+    }
+
+    tr:nth-child(even) td {
+      background: #3a3553;
+    }
+
+    tr:hover td {
+      background: #4a4165;
+      transition: background 0.2s;
+    }
+
+    td {
+      color: #e0ccff;
+      font-size: 1em;
+    }
+
+    form {
+      width: 90%;
+      max-width: 600px;
+      margin: 30px auto;
+      background: #2e2e42;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(129, 104, 255, 0.15);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #d4bfff;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #3a3553;
+      color: #f0eaff;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1em;
+      font-weight: bold;
+      background: linear-gradient(90deg, #7c4dff 0%, #512da8 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(129, 104, 255, 0.20);
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #512da8 0%, #7c4dff 100%);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .return-link {
+      display: block;
+      width: fit-content;
+      margin: 20px auto 0 auto;
+      background: linear-gradient(90deg, #4a4a6f 0%, #38385a 100%);
+      color: white !important;
+      padding: 10px 24px;
+      font-size: 1em;
+      text-align: center;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .return-link:hover {
+      background: linear-gradient(90deg, #38385a 0%, #4a4a6f 100%);
+      transform: translateY(-1px);
+      color: #fff !important;
+    }
+
+  </style>
+</head>
+<body>
+
+<h1 th:text="'Solicitudes de ' + ${estudiante.nombre}">Solicitudes</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Programa</th>
+    <th>Universidad Destino</th>
+    <th>Estado</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="s : ${solicitudes}">
+    <td th:text="${s.programaPostulado}">Programa</td>
+    <td th:text="${s.comentarios}">Comentarios</td>
+    <td th:text="${s.estado}">Estado</td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/estudiantes/lista}" class="return-link">← Volver a Lista de Estudiantes</a>
+<h2>Agregar Nueva Solicitud</h2>
+
+<form th:action="@{/solicitudes/guardar}" th:object="${nuevaSolicitud}" method="post">
+  <input type="hidden" th:field="*{idEstudiante}" />
+
+  <label>Fecha:</label>
+  <input type="date" th:field="*{fecha}" required/>
+
+  <label>Programa Postulado:</label>
+  <input type="text" th:field="*{programaPostulado}" required/>
+
+  <label>Comentarios:</label>
+  <textarea th:field="*{comentarios}" rows="4"></textarea>
+
+  <label>Estado:</label>
+  <select th:field="*{estado}" required>
+    <option value="PENDIENTE">Pendiente</option>
+    <option value="ACEPTADA">Aceptada</option>
+    <option value="RECHAZADA">Rechazada</option>
+  </select>
+
+  <button type="submit">Guardar Solicitud</button>
+</form>
+
+</body>
+</html>

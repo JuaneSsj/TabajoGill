@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Informaciones Académicas del Curso</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: "Times New Roman", Arial, sans-serif;
+            background: linear-gradient(120deg, #1e1e2f, #2a2a3d);
+            color: #f0eaff;
+            padding: 40px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #d4bfff;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto 40px auto;
+            border-collapse: collapse;
+            background-color: #2e2e42;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 16px rgba(129, 104, 255, 0.12);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #43356b;
+            color: #f0eaff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #3a3553;
+        }
+
+        tr:hover td {
+            background-color: #4a4165;
+        }
+
+        .back-link {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            text-align: center;
+            padding: 12px 20px;
+            background: linear-gradient(90deg, #7c4dff, #512da8);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            background: linear-gradient(90deg, #512da8, #7c4dff);
+        }
+    </style>
+</head>
+<body>
+
+<h1 th:text="'Informaciones Académicas de: ' + ${curso.nombreCurso}">Curso</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Universidad Origen</th>
+        <th>Nivel</th>
+        <th>Promedio</th>
+        <th>Fecha Ingreso</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="info : ${informaciones}">
+        <td th:text="${info.universidadOrigen}">U</td>
+        <td th:text="${info.nivel}">Nivel</td>
+        <td th:text="${info.promedio}">Promedio</td>
+        <td th:text="${info.fechaIngreso}">Fecha</td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/cursos}" class="back-link">← Volver a Lista de Cursos</a>
+
+</body>
+</html>

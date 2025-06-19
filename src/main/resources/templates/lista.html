@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Estudiantes</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Arial, sans-serif;
+      background: linear-gradient(120deg, #1e1e2f 0%, #2a2a3d 100%);
+      margin: 0;
+      padding: 0;
+      color: #f0eaff;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d4bfff;
+      margin-top: 40px;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+    }
+
+    .register-link {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 30px auto;
+      background: linear-gradient(90deg, #7c4dff 0%, #512da8 100%);
+      color: #fff !important;
+      border-radius: 6px;
+      padding: 12px 28px;
+      font-size: 1.1em;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(129, 104, 255, 0.20);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .register-link:hover {
+      background: linear-gradient(90deg, #512da8 0%, #7c4dff 100%);
+      transform: translateY(-2px) scale(1.03);
+      color: #fff !important;
+    }
+
+    table {
+      width: 90%;
+      margin: 0 auto 40px auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #2e2e42;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(129, 104, 255, 0.12);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #43356b;
+      color: #f0eaff;
+      font-weight: 600;
+      border-bottom: 2px solid #7c4dff;
+    }
+
+    tr:nth-child(even) td {
+      background: #3a3553;
+    }
+
+    tr:hover td {
+      background: #4a4165;
+      transition: background 0.2s;
+    }
+
+    td {
+      color: #e0ccff;
+      font-size: 1em;
+    }
+
+    .delete-button {
+      background-color: #d9534f;
+      color: white;
+      padding: 7px 14px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.25s;
+    }
+
+    .delete-button:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Estudiantes Registrados</h1>
+
+<a th:href="@{/estudiantes/nuevo}" class="register-link">Registrar nuevo estudiante</a>
+<a th:href="@{/cursos/nuevo}" class="register-link" style="margin-top: 10px;">Agregar Curso</a>
+<a th:href="@{/cursos}" class="register-link" style="margin-top: 10px;">Ver Cursos</a>
+
+<table>
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Correo</th>
+    <th>Edad</th>
+    <th>Tipo Estudiante</th>
+    <th>Promedio</th>
+    <th>Universidad Origen</th>
+    <th>Fecha Ingreso</th>
+    <th>Nivel</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="fila : ${datos}">
+    <td th:text="${fila.estudiante.nombre}">Nombre</td>
+    <td th:text="${fila.estudiante.correo}">Correo</td>
+    <td th:text="${fila.estudiante.edad}">Edad</td>
+    <td th:text="${fila.estudiante.tipoEstudiante}">Tipo</td>
+    <td th:text="${fila.info != null ? fila.info.promedio : 'N/A'}">Promedio</td>
+    <td th:text="${fila.info != null ? fila.info.universidadOrigen : 'N/A'}">Universidad</td>
+    <td th:text="${fila.info != null ? fila.info.fechaIngreso : 'N/A'}">Ingreso</td>
+    <td th:text="${fila.info != null ? fila.info.nivel : 'N/A'}">Nivel</td>
+    <td>
+      <a th:if="${fila.estudiante.idEstudiante != null}"
+         th:href="@{/solicitudes/estudiante/{id}(id=${fila.estudiante.idEstudiante})}"
+         class="register-link">Ver/Agregar Admisiones</a>
+
+    </td>
+
+  </tr>
+
+  <tr th:each="curso : ${cursos}">
+    <td th:text="${curso.nombreCurso}">Nombre</td>
+    <td th:text="${curso.codigoCurso}">Código</td>
+    <td th:text="${curso.creditos}">Créditos</td>
+    <td th:text="${curso.tipoCurso}">Tipo</td>
+    <td>
+        <span th:each="info : ${cursoInformacionesMap[curso.idCurso]}">
+            <span th:text="${info.universidadOrigen + ' (' + info.nivel + ')'}"></span><br/>
+        </span>
+    </td>
+    <td>
+      <a th:href="@{/cursos/asignar/{id}(id=${curso.idCurso})}" class="register-link" style="margin-bottom: 8px;">Asignar</a><br>
+      <a th:href="@{/cursos/eliminar/{id}(id=${curso.idCurso})}" class="delete-button">Eliminar</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
