@@ -29,4 +29,6 @@ public class InformacionAcademicaCursoDao {
         String sql = "DELETE FROM informacionacademicacurso WHERE idCurso = ?";
         jdbcTemplate.update(sql, idCurso);
     }
+
+
 }
